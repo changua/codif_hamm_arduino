@@ -33,9 +33,9 @@ class InterfazHamm():
        self.creditos = ttk.Label(self.raiz,font=self.Arial15,text="Creado por:\n Changua\n Campeche\n Borracho",foreground="orange red",background="light blue")
        self.ingreso_text = ttk.Label(self.panel_principal1,text="Mensaje: ",font=self.Arial15,foreground="orange red",background="light blue",borderwidth=43)
        self.texto = ttk.Entry(self.panel_principal1,textvariable=self.Emisor,foreground="orange red")
-       self.enviar = ttk.Button(self.panel_principal1,text="Enviar",command=self.prueba) #falta hacer la funcion para poner el metodo del comando.
-       self.limpiar = ttk.Button(self.raiz,text="limpiar chat")
-       self.chat = ttk.Label(self.panel_principal2,textvariable=self.Receptor,font=self.Arial15,foreground="orange red",background="white",borderwidth=150)
+       self.enviar = ttk.Button(self.panel_principal1,text="Enviar",command=self.chat)
+       self.limpiar = ttk.Button(self.raiz,text="limpiar chat",command=self.clean)
+       self.panel_chat = Listbox(self.panel_principal2,height=14,width=38,font=self.Arial15,foreground="orange red",background="white")
        #poscionamiento de elementos
        self.cuerpo.grid(column=0,row=0)
        self.cuerpo_menu_principal.grid(column=1,row=0,sticky="n")
@@ -48,16 +48,15 @@ class InterfazHamm():
        self.ingreso_text.grid(column=0,row=1,sticky="e")
        self.texto.grid(column=1,row=1,sticky="w,e")
        self.enviar.grid(column=2,row=1,sticky="e")
-       self.chat.pack()
+       self.panel_chat.grid(column=0,row=0,sticky="n,w")
        #inicio de interfaz
-       self.Receptor=self.Emisor.get()
-       self.aux=0
+       self.aux=100
        self.raiz.mainloop()
-    def prueba(self):
-        self.Receptor=self.Emisor.get()
-        self.chat = ttk.Label(self.panel_principal2,textvariable=self.Receptor)
-        self.chat.pack()
-        self.aux=+1
-        print(self.Receptor)
+    def chat(self):
+        self.panel_chat.insert(self.aux,self.Emisor.get())
+        self.aux=self.aux-1
+    def clean(self):
+        self.panel_chat.delete(0,100)
+        self.aux=100
 if __name__== '__main__':
     mi_interfaz = InterfazHamm()
