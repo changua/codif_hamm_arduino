@@ -11,20 +11,14 @@ void cod_hamm::carc_bin(char c)
 }
 void cod_hamm::par()
 {
-	int aux=b[0]+b[1]+b[3]+b[4]+b[6]+p[0];
+	int aux=b[0]+b[1]+b[3]+b[4]+b[6];
 	p[0]=aux%2;
-	aux=b[0]+b[2]+b[3]+b[5]+b[6]+p[1];
+	aux=b[0]+b[2]+b[3]+b[5]+b[6];
 	p[1]=aux%2;
-	aux=b[1]+b[2]+b[3]+b[7]+p[2];
+	aux=b[1]+b[2]+b[3]+b[7];
 	p[2]=aux%2;
-	aux=b[4]+b[5]+b[6]+b[7]+p[3];
+	aux=b[4]+b[5]+b[6]+b[7];
 	p[3]=aux%2;
-	for (int i=0;i<4;i++)//for para probar el calculo de las paridades.
-	{
-		printf("\n\t\t%d",p[i]);
-	}
-
-
 }
 void cod_hamm::men()
 {
@@ -52,9 +46,8 @@ void cod_hamm::sinc()
 	{
 		m[i]=cod[i+8];
 	}
-	m[11]=1;//error agregador para probar la decodificación
 }
-void cod_hamm::error()
+void cod_hamm::errorr()
 {	
 	int aux=m[0]+m[2]+m[4]+m[6]+m[8]+m[10];
 	int e[3];
@@ -65,12 +58,7 @@ void cod_hamm::error()
 	e[2]=aux%2;
 	aux=m[7]+m[8]+m[9]+m[10]+m[11];
 	e[3]=aux%2;
-	for (int i=0;i<4;i++)//prueba del vector de errores.
-	{	
-		printf("\n\t\t%d",e[i]);
-	}
 	int pe=e[0]+e[1]*2+e[2]*4+e[3]*8;//calculo del error.
-	printf("\n\t%d",pe);//posicion del error.
 	if (pe!=0)
 	{
 		if (m[pe-1]==1)
@@ -79,7 +67,7 @@ void cod_hamm::error()
 			m[pe-1]=1;
 	}
 }
-void cod_hamm::dec()//decodifica el mensaje partiendo del vector m
+void cod_hamm::deco()//decodifica el mensaje partiendo del vector m
 {
 	for (int i=2,j=0;i<12;i++)
 	{
@@ -105,28 +93,46 @@ char cod_hamm::bin_carc()
 cod_hamm hamming;
 int main()
 {
-    hamming.carc_bin('l');
-	hamming.par();
-	hamming.men();
-	for (int i=0;i<20;i++)
-	{
-		printf("\n%d",hamming.cod[i]);
-	}
-	for (int i=0;i<8;i++)
-	{	
-		printf("\n\t%d",hamming.b[i]);
-	}
-	hamming.sinc();
-	hamming.error();
-	for (int i=0;i<12;i++)
-	{
-		printf("\n%d",hamming.m[i]);
-	}
-	hamming.dec();
-	for (int i=0;i<8;i++)
-	{
-		printf("\n\t%d",hamming.b[i]);
-	}
-	char c=hamming.bin_carc();
-	printf("\n%c\n",c);
+    clock_t start, end;
+    double cpu_time_used;
+    start = clock();
+    int n=2;
+    char t[100];
+    printf("ingrese la cadena: ");
+    gets(t);
+    for (int j=0;j<strlen(t);j++)
+    {
+        hamming.carc_bin(t[j]);
+	    hamming.par();
+	    hamming.men();
+	    for (int i=0;i<8;i++)
+	    {
+		    printf("%d",hamming.b[i]);
+	    }
+        printf("\t");
+	    for (int i=0;i<20;i++)
+	    {	
+		    printf("%d",hamming.cod[i]);
+	    }
+        printf("\t");
+	    hamming.sinc();
+	    hamming.errorr();
+	    for (int i=0;i<12;i++)
+	    {
+		    printf("%d",hamming.m[i]);
+	    }
+        
+        printf("\t");
+	    hamming.deco();
+	    for (int i=0;i<8;i++)
+	    {
+		    printf("%d",hamming.b[i]);
+	    }
+	    char c=hamming.bin_carc();
+        printf("\t");
+	    printf("%c\n",c);
+    }
+    end = clock();
+    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+    printf("Tiempo invertido = %lf \n",cpu_time_used);
 }
