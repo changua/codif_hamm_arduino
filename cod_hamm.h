@@ -2,8 +2,7 @@
 #ifndef cod_hamm_h
 #define cod_hamm_h
 #include <stdio.h>
-#include <iostream>
-#include <time.h>
+#include "Arduino.h"
 #include <string.h>
 #include <math.h>
 class cod_hamm  //clase cod_hamm.

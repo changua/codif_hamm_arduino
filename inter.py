@@ -18,7 +18,8 @@ class InterfazHamm():
        #Variable
        self.Emisor = StringVar()
        self.Receptor = StringVar()
-       #self.ser = s.Serial('/dev/ttyUSB0',9600)
+       self.cadena = StringVar()
+       self.ser = s.Serial('/dev/ttyUSB0',9600)
        #Fuentes
        self.Arial50 = font.Font(family="Arial",size=50)
        self.Arial30 = font.Font(family="Arial",size=30)
@@ -55,6 +56,9 @@ class InterfazHamm():
     def chat(self):
         self.panel_chat.insert(self.aux,self.Emisor.get())
         self.aux=self.aux-1
+        self.ser.write(self.Emisor.get())
+        self.cadena=self.ser.readline()
+        print '\n%s'%self.cadena
     def clean(self):
         self.panel_chat.delete(0,100)
         self.aux=100
